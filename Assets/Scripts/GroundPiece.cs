@@ -12,6 +12,8 @@ public class GroundPiece : MonoBehaviour
         // get the color of the object
         GetComponent<MeshRenderer>().material.color = color;
         isColored = true;
+
+        GameManager.singleton.CheckComplete(); // important code to make scene move to the next
     }
     
 }

@@ -6,18 +6,21 @@ using UnityEngine;
 public class BallController : MonoBehaviour
 {
     public Rigidbody rb; // a component that takes care of movement
-    public float speed = 15;
+    public ParticleSystem explosionParticle;
 
-    private bool isMoving;
-    private Vector3 direction;
-    private Vector3 nextCollisionPosition;
+
+    public float speed = 15;
+    private float moveBall = 0.5f;
 
     public int minSwipeRecognition = 500; // gets the direction the mouse should move before the ball moves to prevent it from moving on mouse hover or screen touch
+
+    private bool isMoving;
+
+    private Vector3 direction;
+    private Vector3 nextCollisionPosition;
     private Vector2 swipePosLastFrame;
     private Vector2 swipePosCurrentFrame;
     private Vector2 currentSwipe;
-
-    private float moveBall = 0.5f;
 
     private Color solveColor;
 
@@ -51,7 +54,11 @@ public class BallController : MonoBehaviour
         }
 
         if (nextCollisionPosition != Vector3.zero) // statement to check if the ball hit a block or wall
+
         {
+            // if ball hits a wall trigger the particle effect
+            explosionParticle.Play();
+
             if (Vector3.Distance(transform.position, nextCollisionPosition) < 1) // if the ball is not moving in x, y or z axis because it hit wall
             {
                 isMoving = false;
@@ -119,8 +126,6 @@ public class BallController : MonoBehaviour
         isMoving = true;
     }
 
+
 }
 
-
-
-// 1:25
