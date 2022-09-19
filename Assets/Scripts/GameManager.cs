@@ -1,9 +1,11 @@
 using System.Collections;
 using System.Collections.Generic;
+using TMPro;
 using UnityEditor.SearchService;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 using Scene = UnityEngine.SceneManagement.Scene;
+using UnityEngine.UI;
 
 public class GameManager : MonoBehaviour
 {
@@ -12,10 +14,15 @@ public class GameManager : MonoBehaviour
 
     private GroundPiece[] allGroundPieces;
 
+    public TextMeshProUGUI levelsCompletedText;
+
+    public Button restartButton;
+
     // Start is called before the first frame update
     void Start()
     {
         SetupNewLevel();
+
     }
 
     private void SetupNewLevel()
@@ -25,10 +32,11 @@ public class GameManager : MonoBehaviour
 
     private void Awake() // method called before the start method
     {
-        if(singleton == null)
+        if (singleton == null)
         {
             singleton = this; // the current game manager becomes the singleton
-        } else if(singleton != this)
+        }
+        else if (singleton != this)
         {
             Destroy(gameObject);
             DontDestroyOnLoad(gameObject); // destroy only if the current game manager is not the singleton
@@ -64,16 +72,28 @@ public class GameManager : MonoBehaviour
             NextLevel();
         }
     }
-       private void NextLevel()
+    private void NextLevel()
+    {
+        if (SceneManager.GetActiveScene().buildIndex == 4) // if game has 20 scene, it'll be == 20
         {
-        if(SceneManager.GetActiveScene().buildIndex == 3) // if game has 20 scene, it'll be == 20
-        {
-            SceneManager.LoadScene(0); // load the first scene
-        } else
+            LevelsCompleted();
+        }
+        else
         {
             SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex + 1); // load the next scene
         }
-           
-        }
-   
+
+    }
+
+    private void LevelsCompleted()
+    {
+        levelsCompletedText.gameObject.SetActive(true);
+        restartButton.gameObject.SetActive(true);
+    }
+
+    public void RestartGame()
+    {
+        SceneManager.LoadScene(0); // load the first scene
+    }
+
 }
